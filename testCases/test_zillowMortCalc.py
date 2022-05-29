@@ -2,11 +2,12 @@ import pytest
 from pageObjects.mortcalc import ZillowMortgageCalculator
 import time
 
+
 def test_test(browser):
     homevalue_amt = "539,000"
     homedownpayment_amt = "107,800"
     downpercentage_amt = "25"
-    interstrate_amt = "4.375"
+    interestrate_amt = "4.375"
 
     page = ZillowMortgageCalculator(browser)
     page.load()
@@ -17,11 +18,14 @@ def test_test(browser):
     print(f"Driver URL   : {browser.current_url}")
 
     print(f"Home Price   : {homevalue_amt}")
-    #page.enter_homevalue(homevalue_amt)
-    #page.enter_value(homedownpayment_amt)
-    #page.enter_value(downpercentage_amt)
+    page.enter_homevalue(homevalue_amt)
+    print(f"Home Down    : {homedownpayment_amt}")
+    page.enter_downpayment(homedownpayment_amt)
+    print(f"Home Down %  : {downpercentage_amt}")
+    page.enter_downpaymentpercent(downpercentage_amt)
     # default 30 year value
-    page.enter_interestreate(interstrate_amt)
+    print(f"Home iRate   : {interestrate_amt}")
+    page.enter_interestrate(interestrate_amt)
     time.sleep(5)
     pass
 
