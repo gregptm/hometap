@@ -1,6 +1,7 @@
 import pytest
 from pageObjects.mortcalc import ZillowMortgageCalculator
 
+
 def test_test(browser):
     page = ZillowMortgageCalculator(browser)
     page.load()
@@ -10,7 +11,6 @@ def test_test(browser):
     print(f"Driver name  : {browser.name}")
     print(f"Driver URL   : {browser.current_url}")
     pass
-
 
 
 if __name__ == "__main__":
