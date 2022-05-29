@@ -10,7 +10,7 @@ baseURL = "https://www.zillow.com/mortgage-calculator/"
 downpayment = '539000'
 
 @pytest.mark.wip
-def test_home_page_title(self, driver):
+def test_home_page_title(self, setup):
     self.driver = driver
     self.driver.get(self.baseURL)
     actual_title=self.driver.title
@@ -29,4 +29,5 @@ def test_set_down_payment(setup):
     calculatorPage.set_down_payment(downpayment)
 
 if __name__ == "__main__":
-    test_set_down_payment()
+    # test_set_down_payment()
+    test_home_page_title()
