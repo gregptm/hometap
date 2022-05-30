@@ -7,10 +7,17 @@ import time
 class ZillowMortgageCalculator:
     URL = "https://www.zillow.com/mortgage-calculator/"
 
+    l_title_interestratehelptooltip_xpath = (By.XPATH,
+                                                                      "(//h4[normalize-space()='Interest rate'])[1]")
+    l_tooltip_x_interestratehelp_xpath = (By.XPATH,
+                                                                   "(//*[name()='svg'][@role='img'])[32]")
+
+    l_label_interestrate_id = (By.ID, 'label_4')
     l_button_interestratehelp_class = (
         By.CLASS_NAME, "TriggerButton-c11n-8-64-1__sc-19o64qd-0 drLVVu")
     l_button_interestratehelp_xpath = (
         By.XPATH, "(//button[@type='button'])[8]")
+
     l_dropdown_loanprogram_id = (By.ID, "form-1_term")
     # note id's are aurogenerated each time so unreliable
     l_errormsg_interestrate_classname = (
@@ -22,6 +29,9 @@ class ZillowMortgageCalculator:
         By.ID, "form-1_downPaymentPercent")
     l_textbox_homeprice_id = (By.ID, "homePrice")
     l_textbox_interestrate_id = (By.ID, "rate")
+
+    l_link_currentrates_xpath = (
+    By.XPATH, "(// a[normalize-space() = 'See current rates'])[1]")
 
     # StyledButton-c11n-8-64-1__sc-wpcbcc-0iGaQCCzgmi__i17mpm-2 jfcxZT
     # // a[normalize - space() = 'Full report']
@@ -80,50 +90,54 @@ class ZillowMortgageCalculator:
 
 
     def verify_monthlypayment(self, expected_value):
-        theElement = self.browser.find_element(*self.l_text_monthlypayment_id)
+
+        monthlypayment_pi = self.browser.find_element(*self.l_text_monthlypayment_id)
         # Verify Monthly Payment
         print(f"Verify monthly payment : "
-              f"{theElement.text} == {expected_value} "
-              f"{type(theElement.text)} == {type(expected_value)}")
-        assert_that(theElement.text, equal_to(expected_value))
+              f"{monthlypayment_pi.text} == {expected_value} "
+              f"{type(monthlypayment_pi.text)} == {type(expected_value)}")
+        assert_that(monthlypayment_pi.text, equal_to(expected_value))
         print(f"Verify monthly payment : "
-              f"{theElement.text} == {expected_value}")
+              f"{monthlypayment_pi.text} == {expected_value}")
 
     def click_full_report(self):
         print("click link full report")
         self.l_link_fullreport_xpath = (By.XPATH, "//a[normalize-space()='Full report']")
-        theElement = self.browser.find_element(*self.l_link_fullreport_xpath)
-        theElement.click()
+        fullreport_link = self.browser.find_element(*self.l_link_fullreport_xpath)
+        fullreport_link.click()
 
 
-    def verify_monthlypayment(self, expected_value):
+    def test_help_button(self):
+        # Click the Help button
+        irate_label = self.browser.find_element(*self.l_label_interestrate_id)
+        irate_help_button = self.browser.find_element(*self.l_button_interestratehelp_xpath)
+        irate_help_button.click()
+        time.sleep(2)
+        # Verify the tooltip title
+        irate_help_tooltip = self.browser.find_element(*self.l_title_interestratehelptooltip_xpath)
 
-        theElement = self.browser.find_element(*self.l_text_monthlypayment_id)
-        # Verify Monthly Payment
-        print(f"Verify monthly payment : "
-              f"{theElement.text} == {expected_value} "
-              f"{type(theElement.text)} == {type(expected_value)}")
-        assert_that(theElement.text, equal_to(expected_value))
-        print(f"Verify monthly payment : "
-              f"{theElement.text} == {expected_value}")
+        assert_that(irate_help_tooltip.text, equal_to(irate_label.text))
+        print(f"Verify tooltip title : {irate_help_tooltip.text} == {irate_label.text}")
 
+        # close tooltip
+        irate_help_tooltip = self.browser.find_element(*self.l_tooltip_x_interestratehelp_xpath)
+        irate_help_tooltip.click()
 
-class ZillowMortgageCalculatorFullReport:
-#    l_text_monthlypayment_id = (
-#        By.CSS_SELECTOR, ".Text-c11n-8-64-1__sc-aiai24-0.cWTZVT")
-    l_text_monthlypayment_id = (By.XPATH, "//*[name()='text' and contains(@y,'20')]")
+    def test_current_rates_link(self):
+        # Click the Current Rate Link
+        currentrates_link = self.browser.find_element(*self.l_link_currentrates_xpath)
+        currentrates_link.click()
+        time.sleep(2)
 
-    def __init__(self, browser):
-        self.browser = browser
+        # Verify Page Title
+        window_name = self.browser.window_handles[1]
+        print(f"window name : {window_name}")
+        self.browser.switch_to.window(window_name=window_name)
 
-    def verify_monthlypayment(self, expected_value):
+        print(f"Verify Page title  : {self.browser.title}")
+        assert_that(self.browser.title, contains_string('Current Mortgage Rates'))
+        time.sleep(2)
 
-        theElement = self.browser.find_element(*self.l_text_monthlypayment_id)
-        # Verify Monthly Payment
-        print(f"Verify monthly payment : "
-              f"{theElement.text} == {expected_value} "
-              f"{type(theElement.text)} == {type(expected_value)}")
-        assert_that(theElement.text, equal_to(expected_value))
-        print(f"Verify monthly payment : "
-              f"{theElement.text} == {expected_value}")
-
+        # Close the tab opened
+        self.browser.close()
+        time.sleep(4)

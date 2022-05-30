@@ -1,6 +1,5 @@
 import pytest
-from pageObjects.mortcalc import ZillowMortgageCalculator, \
-    ZillowMortgageCalculatorFullReport
+from pageObjects.mortcalc import ZillowMortgageCalculator
 import time
 
 
@@ -20,22 +19,19 @@ def test_test(browser):
     print(f"Driver URL   : {browser.current_url}")
 
     print(f"Home Price   : {homevalue_amt}")
-    page.enter_homevalue(homevalue_amt)
+    #page.enter_homevalue(homevalue_amt)
     print(f"Home iRate   : {interestrate_amt}")
-    page.enter_interestrate(interestrate_amt)
+    #page.enter_interestrate(interestrate_amt)
     print(f"Home Down    : {homedownpayment_amt}")
-    page.enter_downpayment(homedownpayment_amt)
+    #page.enter_downpayment(homedownpayment_amt)
     print(f"Home Down %  : {downpercentage_amt}")
-    page.enter_downpaymentpercent(downpercentage_amt)
+    #page.enter_downpaymentpercent(downpercentage_amt)
     # default 30 year value
 
-    time.sleep(15)
-    page.verify_monthlypayment(monthlypayment_amt)
+    #page.verify_monthlypayment(monthlypayment_amt)
 
-    #page.click_full_report()
-    #page2 = ZillowMortgageCalculatorFullReport(browser)
-    #page2.verify_monthlypayment(monthlypayment_amt)
-
+    #page.test_help_button()
+    page.test_current_rates_link()
 
 if __name__ == "__main__":
     test_test()
