@@ -1,5 +1,5 @@
 import pytest
-from pageObjects.mortcalc import ZillowMortgageCalculatorPage
+from pages.mortcalc import ZillowMortgageCalculatorPage
 
 
 @pytest.mark.L0

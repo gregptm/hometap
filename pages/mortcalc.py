@@ -110,6 +110,9 @@ class ZillowMortgageCalculatorPage:
         self.browser.switch_to.window(window_name=window_name)
 
         # Verify Page Title
+        # TODO: while GH_TOEN is failing, using straight driver works,
+        #  see conftest.py
+        #  however this verification fails for FF
         print(f"Verify Page title  : {self.browser.title}")
         assert_that(self.browser.title,
                     contains_string('Current Mortgage Rates'))

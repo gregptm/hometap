@@ -60,8 +60,10 @@ def browser(config_browser, config_wait_time):
         driver = Chrome(service=Service(ChromeDriverManager().install()))
     elif config_browser == 'firefox':
         # still works if driver is in path locally
-        # driver = Firefox()
-        driver = Firefox(service=Service(GeckoDriverManager().install()))
+        # does not seem to need GH_TOKEN
+        driver = Firefox()
+        # TODO: GH_TOKEN SEEMS TO NOW BE FAILING - investigate
+        # driver = Firefox(service=Service(GeckoDriverManager().install()))
     else:
         raise Exception(
             f'"{config_browser}" is not a supported browser in our list')
