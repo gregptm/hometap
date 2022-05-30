@@ -67,6 +67,6 @@ def browser(config_browser, config_wait_time):
             f'"{config_browser}" is not a supported browser in our list')
 
     driver.implicitly_wait(config_wait_time)
-    driver.maximize_window()
+    #driver.maximize_window()
     yield driver
     driver.quit()
