@@ -10,8 +10,6 @@ import os
 CONFIG_PATH = 'Configurations/config.json'
 DEFAULT_WAIT_TIME = 10
 SUPPORTED_BROWSERS = ['chrome', 'firefox']
-# api limit token for firefox drivermanager
-os.environ['GH_TOKEN'] = "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"
 
 
 @pytest.fixture(scope='session')
