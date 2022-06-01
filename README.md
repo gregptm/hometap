@@ -42,6 +42,8 @@ __*GitHub Repo*__:  Hometap  @  https://github.com/gregptm
       <ul>
         <li>So I tried running just FF driver direct vs the new manager way, and FF runs.</li>
         <li>However, I see that it fails to verify the new page test for the Current Rates link, added a TODO in code</li>
+       <br>
+        <li> NOTE : 5/31 - email arrived saying GitHub revoked the token. Reread the documentation and fixed the Token issue. FF still chokes on my verification of the Current Rates link - suspect a timing/window close issue.</li>
       </ul>
 </ul>
 
