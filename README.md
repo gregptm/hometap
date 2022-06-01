@@ -7,6 +7,7 @@ __*GitHub Repo*__:  Hometap  @  https://github.com/gregptm
 
 ### ENV set up
 
+In some working directory where you put automation projects:
 <pre>
  git clone https://github.com/gregptm/hometap.git
  python3 -m venv hometap
