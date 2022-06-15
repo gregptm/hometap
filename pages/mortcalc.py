@@ -4,6 +4,7 @@ import logging
 
 LOGGER = logging.getLogger(__name__)
 
+
 class ZillowMortgageCalculatorPage:
     '''
     TODO: need a JIRA Story to set up a proxy
@@ -43,40 +44,41 @@ class ZillowMortgageCalculatorPage:
     def load(self):
         self.browser.get(self.URL)
 
-    def type_entry(self, value, element):
+    def _type_entry(self, value, element):
         # why why why !?!
         element.clear()
         element.clear()
         element.click()
         element.send_keys(value + Keys.TAB)
+
+        # debug to show changes to end value as we go
         theResultingMonthly = self.browser.find_element(
             *self.l_text_monthlypayment_id)
         LOGGER.info(f"the entered value: {value} "
-              f"resulting MonthlyP&I: {theResultingMonthly.text}")
+                    f"resulting MonthlyP&I: {theResultingMonthly.text}")
 
     def enter_homevalue(self, value):
         theElement = self.browser.find_element(*self.l_textbox_homeprice_id)
-        self.type_entry(value, theElement)
+        self._type_entry(value, theElement)
 
     def enter_downpayment(self, value):
         theElement = self.browser.find_element(*self.l_textbox_downpayment_id)
-        self.type_entry(value, theElement)
+        self._type_entry(value, theElement)
 
     def enter_downpaymentpercent(self, value):
         theElement = self.browser.find_element(
             *self.l_textbox_downpaymentpercent_id)
-        self.type_entry(value, theElement)
+        self._type_entry(value, theElement)
 
     def enter_interestrate(self, value):
         theElement = self.browser.find_element(
             *self.l_textbox_interestrate_id)
-        self.type_entry(value, theElement)
+        self._type_entry(value, theElement)
 
     def get_monthlypayment(self):
         monthlypayment_pi = self.browser.find_element(
             *self.l_text_monthlypayment_id)
-        LOGGER.info(f"Return monthly payment : "
-              f"{monthlypayment_pi.text}")
+        LOGGER.info(f"Return monthly payment : {monthlypayment_pi.text}")
         return monthlypayment_pi.text
 
     def click_test_help_button(self):
@@ -91,6 +93,8 @@ class ZillowMortgageCalculatorPage:
         # return tooltip title text
         irate_help_tooltip_title = self.browser.find_element(
             *self.l_title_interestratehelptooltip_xpath)
+        LOGGER.info(f"Return test help button title : "
+                    f"{irate_help_tooltip_title.text}")
         return irate_help_tooltip_title.text
 
     def click_test_help_button_tooltip_x(self):
@@ -105,7 +109,7 @@ class ZillowMortgageCalculatorPage:
             *self.l_link_currentrates_xpath)
         currentrates_link.click()
 
-    def get_current_tab(self):
+    def switch_to_current_tab(self):
         # Switch to tab just opened
         window_name = self.browser.window_handles[1]
         self.browser.switch_to.window(window_name=window_name)

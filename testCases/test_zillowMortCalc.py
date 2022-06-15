@@ -3,9 +3,13 @@ from hamcrest import *
 from pages.mortcalc import ZillowMortgageCalculatorPage
 import logging
 import time
+import warnings
+from datetime import datetime
 
-LOGGER = logging.getLogger(__name__)
-
+now = datetime.now()
+formatted_datetime_now = f"{__name__}{now:%Y%m%m%H%M%S}"
+print(f"{formatted_datetime_now}")
+LOGGER = logging.getLogger(formatted_datetime_now)
 
 
 @pytest.mark.L0
@@ -44,10 +48,10 @@ def test_Mortgage_Calculator_Fixed(browser):
     # default 30 year value
 
     # Verify monthly P&I number til we get a proxy set up or advanced feature
-    time.sleep(2) # delay for form to catch up to data entry
+    time.sleep(2)  # delay for form to catch up to data entry
     calculated_monthly_payment_amt = page.get_monthlypayment()
     LOGGER.info(f"Verify monthly payment : "
-          f"{calculated_monthly_payment_amt} == {monthlypayment_amt}")
+                f"{calculated_monthly_payment_amt} == {monthlypayment_amt}")
     assert_that(calculated_monthly_payment_amt, equal_to(monthlypayment_amt))
 
 
@@ -64,10 +68,11 @@ def test_Interst_Rate_help_tooltip(browser):
     # Verify the tooltip title
     found_irate_help_tooltip_title = page.get_test_help_button_title()
     LOGGER.info(f"Verify tooltip title : "
-          f"{found_irate_help_tooltip_title} == {irate_title}")
+                f"{found_irate_help_tooltip_title} == {irate_title}")
     assert_that(found_irate_help_tooltip_title, equal_to(irate_title))
     # close the tooltip
     page.click_test_help_button_tooltip_x()
+
 
 @pytest.mark.L1
 def test_Interst_Rate_link(browser):
@@ -76,9 +81,9 @@ def test_Interst_Rate_link(browser):
 
     expected_page_title = 'Current Mortgage Rates'
     page.click_test_current_rates_link()
-    page.get_current_tab()
-    time.sleep(2) # give it a moment to produce the title
-    LOGGER.info(f"Verify Page title  : {expected_page_title} < IN > {browser.title}")
-    assert_that(browser.title,
-            contains_string(expected_page_title))
+    page.switch_to_current_tab()
+    time.sleep(2)  # give it a moment to produce the title
+    LOGGER.info(f"Verify Page title  : "
+                f"{expected_page_title} < IN > {browser.title}")
+    assert_that(browser.title, contains_string(expected_page_title))
     page.close_current_tab()

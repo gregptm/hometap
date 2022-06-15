@@ -5,6 +5,7 @@ from webdriver_manager.chrome import ChromeDriverManager
 from webdriver_manager.firefox import GeckoDriverManager
 import pytest
 import json
+from datetime import datetime
 import os
 
 CONFIG_PATH = 'Configurations/config.json'
@@ -21,6 +22,13 @@ def config():
     with open(CONFIG_PATH) as config_file:
         data = json.load(config_file)
     return data
+
+
+def pytest_configure(config):
+    """ Create a log file if log_file is not mentioned in *.ini file"""
+    if not config.option.log_file:
+        timestamp = datetime.strftime(datetime.now(), '%Y-%m-%d_%H-%M-%S')
+        config.option.log_file = 'logs/log.' + timestamp + ".log"
 
 
 @pytest.fixture(scope='session')
@@ -67,6 +75,7 @@ def browser(config_browser, config_wait_time):
             f'"{config_browser}" is not a supported browser in our list')
 
     driver.implicitly_wait(config_wait_time)
-    #driver.maximize_window()
+    # driver.maximize_window()
     yield driver
+
     driver.quit()
