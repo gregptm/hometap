@@ -13,19 +13,26 @@ LOGGER = logging.getLogger(formatted_datetime_now)
 
 
 @pytest.mark.L0
-def test_Mortgage_Calculator_Fixed(browser):
+@pytest.mark.parametrize(
+    'homevalue_amt, '
+    'homedownpayment_amt, '
+    'downpercentage_amt, '
+    'interestrate_amt, '
+    'monthlypayment_amt',
+    [("539,000", "107,800", "25", "4.375", "$2,018")])
+def test_Mortgage_Calculator_Fixed(
+        browser,
+        homevalue_amt,
+        homedownpayment_amt,
+        downpercentage_amt,
+        interestrate_amt,
+        monthlypayment_amt):
     '''
     TODO: need a JIRA Story to set up a proxy
           and change from verifying monthly P&I to full monthly value
           monthlypayment_amt
           see also page object for changes
     '''
-    homevalue_amt = "539,000"
-    homedownpayment_amt = "107,800"
-    downpercentage_amt = "25"
-    interestrate_amt = "4.375"
-
-    monthlypayment_amt = "$2,018"
     # TODO: "$2,474" Can't  use as there is rotating taxes need constant proxy
 
     page = ZillowMortgageCalculatorPage(browser)
