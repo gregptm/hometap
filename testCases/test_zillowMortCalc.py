@@ -6,10 +6,7 @@ import time
 import warnings
 from datetime import datetime
 
-now = datetime.now()
-formatted_datetime_now = f"{__name__}{now:%Y%m%m%H%M%S}"
-print(f"{formatted_datetime_now}")
-LOGGER = logging.getLogger(formatted_datetime_now)
+mort_calc_logger = logging.getLogger(__name__)
 
 
 @pytest.mark.L0
@@ -19,7 +16,7 @@ LOGGER = logging.getLogger(formatted_datetime_now)
     'downpercentage_amt, '
     'interestrate_amt, '
     'monthlypayment_amt',
-    [("539,000", "107,800", "25", "4.375", "$2,018")])
+    [("539,000", "107,800", "25", "4.375", "$2,018"), ("300,000", "30,000", "10", "2.5", "$1,067")])
 def test_Mortgage_Calculator_Fixed(
         browser,
         homevalue_amt,
@@ -28,6 +25,7 @@ def test_Mortgage_Calculator_Fixed(
         interestrate_amt,
         monthlypayment_amt):
     '''
+    Test parameterized for a 30 year Fixed and a 5 year Arm
     TODO: need a JIRA Story to set up a proxy
           and change from verifying monthly P&I to full monthly value
           monthlypayment_amt
@@ -37,27 +35,27 @@ def test_Mortgage_Calculator_Fixed(
 
     page = ZillowMortgageCalculatorPage(browser)
     page.load()
-    LOGGER.info("\n\n")
-    LOGGER.info(f"This File's  __name__ is set to: {format(__name__)}")
-    LOGGER.info(f"Browser Title : {browser.title}")
-    LOGGER.info(f"Browser name  : {browser.name}")
-    LOGGER.info(f"Browser URL   : {browser.current_url}")
+    mort_calc_logger.info("\n\n")
+    mort_calc_logger.info(f"This File's  __name__ is set to: {format(__name__)}")
+    mort_calc_logger.info(f"Browser Title : {browser.title}")
+    mort_calc_logger.info(f"Browser name  : {browser.name}")
+    mort_calc_logger.info(f"Browser URL   : {browser.current_url}")
 
     # oddly had to do out of order, elseL interest changed on us
-    LOGGER.info(f"Home Price   : {homevalue_amt}")
+    mort_calc_logger.info(f"Home Price   : {homevalue_amt}")
     page.enter_homevalue(homevalue_amt)
-    LOGGER.info(f"Home iRate   : {interestrate_amt}")
+    mort_calc_logger.info(f"Home iRate   : {interestrate_amt}")
     page.enter_interestrate(interestrate_amt)
-    LOGGER.info(f"Home Down    : {homedownpayment_amt}")
+    mort_calc_logger.info(f"Home Down    : {homedownpayment_amt}")
     page.enter_downpayment(homedownpayment_amt)
-    LOGGER.info(f"Home Down %  : {downpercentage_amt}")
+    mort_calc_logger.info(f"Home Down %  : {downpercentage_amt}")
     page.enter_downpaymentpercent(downpercentage_amt)
     # default 30 year value
 
     # Verify monthly P&I number til we get a proxy set up or advanced feature
     time.sleep(2)  # delay for form to catch up to data entry
     calculated_monthly_payment_amt = page.get_monthlypayment()
-    LOGGER.info(f"Verify monthly payment : "
+    mort_calc_logger.info(f"Verify monthly payment : "
                 f"{calculated_monthly_payment_amt} == {monthlypayment_amt}")
     assert_that(calculated_monthly_payment_amt, equal_to(monthlypayment_amt))
 
@@ -74,7 +72,7 @@ def test_Interst_Rate_help_tooltip(browser):
     page.click_test_help_button()
     # Verify the tooltip title
     found_irate_help_tooltip_title = page.get_test_help_button_title()
-    LOGGER.info(f"Verify tooltip title : "
+    mort_calc_logger.info(f"Verify tooltip title : "
                 f"{found_irate_help_tooltip_title} == {irate_title}")
     assert_that(found_irate_help_tooltip_title, equal_to(irate_title))
     # close the tooltip
@@ -90,7 +88,7 @@ def test_Interst_Rate_link(browser):
     page.click_test_current_rates_link()
     page.switch_to_current_tab()
     time.sleep(2)  # give it a moment to produce the title
-    LOGGER.info(f"Verify Page title  : "
+    mort_calc_logger.info(f"Verify Page title  : "
                 f"{expected_page_title} < IN > {browser.title}")
     assert_that(browser.title, contains_string(expected_page_title))
     page.close_current_tab()

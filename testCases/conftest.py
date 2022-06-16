@@ -11,7 +11,7 @@ import os
 CONFIG_PATH = 'Configurations/config.json'
 DEFAULT_WAIT_TIME = 10
 SUPPORTED_BROWSERS = ['chrome', 'firefox']
-
+DRIVE_LOCATION = 0
 
 @pytest.fixture(scope='session')
 def config():
@@ -25,19 +25,19 @@ def config():
 
 
 def pytest_configure(config):
-    """ Create a log file if log_file is not mentioned in *.ini file
+    """ Create a log file if log_file is not mentioned in pytest.ini file
         override wth
         pytest tests --log-file logs/pytest_$(date '+%F_%H-%M-%S').log
     """
     if not config.option.log_file:
         timestamp = datetime.strftime(datetime.now(), '%F_%H-%M-%S')
-        config.option.log_file = f"logs/pytest_{timestamp}.log"
+        config.option.log_file = f"logs/{__name__}_{timestamp}.log"
 
 
 @pytest.fixture(scope='session')
 def config_browser(config):
     '''
-        detects if the browser set in config.json is one we support
+    detects if the browser set in config.json is one we support
     :param config:
     :return:
     '''
@@ -78,7 +78,18 @@ def browser(config_browser, config_wait_time):
             f'"{config_browser}" is not a supported browser in our list')
 
     driver.implicitly_wait(config_wait_time)
-    # driver.maximize_window()
+    driver.maximize_window()
+
+    #drive the browser to a certain location for consistent tax calculations
+    latitude = 42.1058163
+    longitude = -71.5448773
+    accuracy = 100
+    driver.execute_cdp_cmd("Emulation.setGeolocationOverride", {
+        "latitude": latitude,
+        "longitude": longitude,
+        "accuracy": accuracy
+    })
+
     yield driver
 
     driver.quit()

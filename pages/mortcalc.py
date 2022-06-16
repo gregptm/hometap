@@ -2,7 +2,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 import logging
 
-LOGGER = logging.getLogger(__name__)
+mort_calc_page_logger = logging.getLogger(__name__)
 
 
 class ZillowMortgageCalculatorPage:
@@ -54,7 +54,7 @@ class ZillowMortgageCalculatorPage:
         # debug to show changes to end value as we go
         theResultingMonthly = self.browser.find_element(
             *self.l_text_monthlypayment_id)
-        LOGGER.info(f"the entered value: {value} "
+        mort_calc_page_logger.info(f"the entered value: {value} "
                     f"resulting MonthlyP&I: {theResultingMonthly.text}")
 
     def enter_homevalue(self, value):
@@ -78,7 +78,7 @@ class ZillowMortgageCalculatorPage:
     def get_monthlypayment(self):
         monthlypayment_pi = self.browser.find_element(
             *self.l_text_monthlypayment_id)
-        LOGGER.info(f"Return monthly payment : {monthlypayment_pi.text}")
+        mort_calc_page_logger.info(f"Return monthly payment : {monthlypayment_pi.text}")
         return monthlypayment_pi.text
 
     def click_test_help_button(self):
@@ -93,7 +93,7 @@ class ZillowMortgageCalculatorPage:
         # return tooltip title text
         irate_help_tooltip_title = self.browser.find_element(
             *self.l_title_interestratehelptooltip_xpath)
-        LOGGER.info(f"Return test help button title : "
+        mort_calc_page_logger.info(f"Return test help button title : "
                     f"{irate_help_tooltip_title.text}")
         return irate_help_tooltip_title.text
 
