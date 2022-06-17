@@ -54,8 +54,8 @@ class ZillowMortgageCalculatorPage:
         # debug to show changes to end value as we go
         theResultingMonthly = self.browser.find_element(
             *self.l_text_monthlypayment_id)
-        mort_calc_page_logger.info(f"the entered value: {value} "
-                    f"resulting MonthlyP&I: {theResultingMonthly.text}")
+        mort_calc_page_logger.info(f"The entered value :  {value}  &  "
+                    f"resulting MonthlyP&I : {theResultingMonthly.text:>15}")
 
     def enter_homevalue(self, value):
         theElement = self.browser.find_element(*self.l_textbox_homeprice_id)
@@ -78,7 +78,7 @@ class ZillowMortgageCalculatorPage:
     def get_monthlypayment(self):
         monthlypayment_pi = self.browser.find_element(
             *self.l_text_monthlypayment_id)
-        mort_calc_page_logger.info(f"Return monthly payment : {monthlypayment_pi.text}")
+        mort_calc_page_logger.info(f"Return monthly payment : {monthlypayment_pi.text:>15}")
         return monthlypayment_pi.text
 
     def click_test_help_button(self):
@@ -93,7 +93,8 @@ class ZillowMortgageCalculatorPage:
         # return tooltip title text
         irate_help_tooltip_title = self.browser.find_element(
             *self.l_title_interestratehelptooltip_xpath)
-        mort_calc_page_logger.info(f"Return test help button title : "
+        log_string = "Return test help button title"
+        mort_calc_page_logger.info(f"{log_string:<30}"
                     f"{irate_help_tooltip_title.text}")
         return irate_help_tooltip_title.text
 

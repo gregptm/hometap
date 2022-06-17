@@ -23,7 +23,6 @@ def config():
         data = json.load(config_file)
     return data
 
-
 def pytest_configure(config):
     """ Create a log file if log_file is not mentioned in pytest.ini file
         override wth
@@ -31,8 +30,8 @@ def pytest_configure(config):
     """
     if not config.option.log_file:
         timestamp = datetime.strftime(datetime.now(), '%F_%H-%M-%S')
-        config.option.log_file = f"logs/{__name__}_{timestamp}.log"
-
+        config.option.log_file = f"logs/base_pytest_{__name__}_{timestamp}.log"
+        
 
 @pytest.fixture(scope='session')
 def config_browser(config):
@@ -72,13 +71,15 @@ def browser(config_browser, config_wait_time):
         # does not seem to need GH_TOKEN
         driver = Firefox()
         # TODO: GH_TOKEN SEEMS TO NOW BE FAILING - investigate
+        # TODO: shoule work now - try it
         # driver = Firefox(service=Service(GeckoDriverManager().install()))
     else:
         raise Exception(
             f'"{config_browser}" is not a supported browser in our list')
 
     driver.implicitly_wait(config_wait_time)
-    driver.maximize_window()
+    # set in driver definition fixture, works better
+    # driver.maximize_window()
 
     #drive the browser to a certain location for consistent tax calculations
     latitude = 42.1058163
