@@ -82,11 +82,13 @@ def test_Interst_Rate_help_tooltip(browser):
 
 @pytest.mark.L1
 def test_Interst_Rate_link(browser):
+
     mort_calc_test_logger.info(f"TEST : Current Interest Rate Link")
     page = ZillowMortgageCalculatorPage(browser)
     page.load()
 
     expected_page_title = 'Current Mortgage Rates'
+
     page.click_test_current_rates_link()
     page.switch_to_current_tab()
     time.sleep(2)  # give it a moment to produce the titlE
@@ -94,3 +96,4 @@ def test_Interst_Rate_link(browser):
                 f"{expected_page_title} < IN > {browser.title:>15}")
     assert_that(browser.title, contains_string(expected_page_title))
     page.close_current_tab()
+
