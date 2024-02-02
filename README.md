@@ -14,7 +14,9 @@ In some working directory where you put automation projects:
  source hometap/bin/activate
  cd hometap
  pip install --upgrade pip
- pip install -r requirements.txt
+ pip install -r requirements.txt --no-cache-dir
+ or if it's been awhile
+ pip install --upgrade -r requirements.txt --no-cache-dir
 </pre> 
  
 ### Run options by level of detail
