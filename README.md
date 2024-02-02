@@ -13,6 +13,7 @@ In some working directory where you put automation projects:
  python3 -m venv hometap
  source hometap/bin/activate
  cd hometap
+ pip install --upgrade pip
  pip install -r requirements.txt
 </pre> 
  
