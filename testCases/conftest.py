@@ -8,7 +8,7 @@ import json
 from datetime import datetime
 import os
 
-CONFIG_PATH = 'Configurations/config.json'
+CONFIG_PATH = '/Users/greg/vm/hometap/Configurations/config.json'
 DEFAULT_WAIT_TIME = 10
 SUPPORTED_BROWSERS = ['chrome', 'firefox']
 DRIVE_LOCATION = 0
@@ -65,7 +65,19 @@ def browser(config_browser, config_wait_time):
         # these still work for chrome
         # driver = Chrome()
         # driver = Chrome("/usr/local/bin/chromedriver")
-        driver = Chrome(service=Service(ChromeDriverManager().install()))
+        ###driver = Chrome(service=Service(ChromeDriverManager().install()))
+
+        chromedriver = '/Users/greg/vm/chromedriver/chromedriver'
+        options = None  # You can initialize options here if needed
+        service = None  # You can initialize service here if needed
+
+        if chromedriver:
+            service = Service(executable_path=chromedriver)
+        else:
+            driver = Chrome(service=Service(ChromeDriverManager().install()))
+        driver = Chrome(service=service, options=options)
+
+
     elif config_browser == 'firefox':
         # still works if driver is in path locally
         # does not seem to need GH_TOKEN
